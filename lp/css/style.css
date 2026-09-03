@@ -1216,6 +1216,7 @@ em  { font-style: normal; }
   .benefits-grid { grid-template-columns: 1fr; }
   .benefit-card--wide { grid-column: auto; }
   .floating-cta { display: block !important; }
+  .site-footer { padding-bottom: 110px; } 
 }
 @media (min-width: 769px) { .floating-cta { display: none !important; } }
 @media (max-width: 480px) {
