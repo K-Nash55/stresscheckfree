@@ -604,7 +604,13 @@ body {
       html += `<div style="font-size:0.75rem;color:#bbb;text-align:center;padding:16px 0 8px">${_footerParts.join('<br>')}</div>`;
     }
 
-    html += `<div class="footer-save-hint"><i class="ti ti-bookmark" aria-hidden="true"></i><p>このページのURLをメールやLINEで自分に送っておくと、いつでも結果を見返すことができます。</p></div>`;
+    html += `<a href="https://forms.gle/Q8jFcNbhtKqyMfUd7" target="_blank" rel="noopener" class="survey-cta">
+  <div>
+    <div class="survey-cta-title">📝 アンケートのお願い</div>
+    <div class="survey-cta-sub">システム改善に生かすので、ぜひご感想をお寄せください。</div>
+  </div>
+  <i class="ti ti-arrow-narrow-right survey-cta-arrow" aria-hidden="true"></i>
+</a>`;
 
     html += `</div>`;
     root.innerHTML = html;
