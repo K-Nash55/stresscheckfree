@@ -34,6 +34,8 @@
   --font:        'Noto Sans JP','Hiragino Sans','Yu Gothic',system-ui,sans-serif;
   --font-d:      'Inter','Noto Sans JP',sans-serif;
   --max-w:       1140px;
+  --sc-navy:     #001A6E;
+  --sc-cyan:     #3EC6E8;
 }
 
 html { scroll-behavior: smooth; }
@@ -174,6 +176,12 @@ em  { font-style: normal; }
 
 .btn-header { padding: 9px 20px; font-size: 0.86rem; margin-left: 6px; }
 
+.nav-corp-link{
+  opacity: .6;
+  font-size: .9em;
+}
+.nav-corp-link:hover{ opacity: 1; }
+
 /* =========================================
    HERO
    ========================================= */
@@ -267,6 +275,14 @@ em  { font-style: normal; }
 }
 .hero-title .em-coral  { color: var(--coral); }
 .hero-title .em-teal   { color: var(--teal); }
+
+.hero-title-kicker{
+  display: block;
+  font-size: 0.32em;
+  font-weight: 700;
+  color: var(--teal);
+  margin-bottom: 8px;
+}
 
 .hero-catch {
   font-size: clamp(1.2rem, 2.5vw, 1.5rem);
@@ -1210,7 +1226,6 @@ em  { font-style: normal; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
-  .header-nav { display: none; }
   .btn-header { display: none; }
   .concerns-grid { grid-template-columns: 1fr; }
   .benefits-grid { grid-template-columns: 1fr; }
@@ -1221,9 +1236,58 @@ em  { font-style: normal; }
 @media (min-width: 769px) { .floating-cta { display: none !important; } }
 @media (max-width: 480px) {
   .hero-title { font-size: 2.2rem; }
+  .hero-title-kicker { font-size: 0.85rem; }
   .btn-hero, .btn-cta { font-size: 0.96rem; padding: 14px 20px; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
   .section-title { margin-bottom: 28px; }
+}
+
+/* =========================================
+   SMALLCHECKER CTA (法人向け)
+   ========================================= */
+.corp-cta{
+  background: linear-gradient(135deg, var(--sc-navy) 0%, #123a9e 100%);
+  padding: 64px 0;
+  text-align: center;
+  color: #fff;
+}
+.corp-eyebrow{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--sc-cyan);
+  margin-bottom: 16px;
+}
+.corp-title{
+  font-family: var(--font-d);
+  font-size: 1.7rem;
+  font-weight: 900;
+  margin-bottom: 14px;
+  color: #fff;
+}
+.corp-title span{ color: var(--sc-cyan); }
+.corp-sub{
+  max-width: 520px;
+  margin: 0 auto 28px;
+  color: rgba(255,255,255,.78);
+  font-size: .95rem;
+  line-height: 1.9;
+}
+.btn-corp{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  color: var(--sc-navy);
+  font-weight: 700;
+  font-size: .95rem;
+  padding: 14px 32px;
+  border-radius: 999px;
+  text-decoration: none;
 }
 
 .profile-disclaimer {
