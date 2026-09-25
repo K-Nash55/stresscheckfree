@@ -77,30 +77,27 @@ body{font-family:'Noto Sans JP',sans-serif;background:radial-gradient(circle at 
 .badge-noreg{background:#FFF0F0;color:#C0392B;border:1px solid rgba(255,107,107,0.3)}
 .brand-logo{font-size:1.4rem;letter-spacing:-0.02em;margin-bottom:20px}
 .cta-copy{text-align:center;color:#526277;font-size:0.95rem;font-weight:600;margin:0 0 12px}
-.notice-box-sm{font-size:11px;color:#888;line-height:1.8;margin-top:14px;text-align:center}
+.notice-box-sm{font-size:11px;color:#888;line-height:1.8;margin-top:20px;text-align:center}
 
-.alt-divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:#B8C2D0;font-size:.75rem}
-.alt-divider::before,.alt-divider::after{content:'';flex:1;height:1px;background:#E2EAF4}
-.alt-box{
-  display:flex;align-items:center;gap:14px;
-  background:#E6FAF9;border:2px solid #0ABFBC;border-radius:16px;
-  padding:16px 18px;text-decoration:none;color:var(--ink);
-  transition:background .15s ease,transform .15s ease;
-  box-shadow:0 6px 18px rgba(10,191,188,0.16);
+.option-section{margin-bottom:24px}
+.option-count{font-size:.85rem;font-weight:800;color:#2B72B7;letter-spacing:.03em;margin-bottom:4px}
+.option-count.teal{color:#0A9E9C}
+.option-name{font-size:1.15rem;font-weight:800;margin-bottom:12px}
+.option-desc{font-size:.85rem;color:var(--ink2);line-height:1.9;margin-bottom:8px}
+.option-time{font-size:.85rem;color:var(--ink2);line-height:1.9;margin-bottom:16px}
+.option-time strong{color:var(--ink);font-weight:800}
+
+.btn-alt{
+  display:block;width:100%;padding:15px 32px;background:#fff;color:#0A9E9C;
+  border:2px solid #0ABFBC;border-radius:999px;font-size:1rem;font-weight:800;
+  cursor:pointer;text-align:center;text-decoration:none;
 }
-.alt-box:hover{background:#D5F5F3;transform:translateY(-1px)}
-.alt-icon{
-  flex-shrink:0;width:44px;height:44px;border-radius:12px;
-  background:linear-gradient(135deg,#0ABFBC,#0A9E9C);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.1rem;
-}
-.alt-text{flex-grow:1}
-.alt-title{display:block;font-size:.92rem;font-weight:800;margin-bottom:2px;color:#1E293B}
-.alt-sub{display:block;font-size:.8rem;color:#0A9E9C;font-weight:700}
-.alt-arrow{color:#0A9E9C;font-size:1.1rem;flex-shrink:0}
-.demo-hint{border:1.5px solid #378ADD;border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;margin-top:12px}
-.demo-hint-badge{background:#378ADD;color:#fff;font-size:11px;font-weight:bold;padding:2px 8px;border-radius:6px;flex-shrink:0;margin-top:2px}
-.demo-hint-text{font-size:13px;color:var(--color-text-primary);margin:0 0 2px;line-height:1.5}
-.demo-hint-sub{font-size:11px;color:#888;margin:0}
+.btn-alt:hover{background:#E6FAF9}
+
+.section-divider{height:1px;background:#EEF1F6;margin:28px 0}
+
+.demo-hint{display:flex;align-items:baseline;gap:8px;margin-top:0;font-size:.8rem;color:#888}
+.demo-hint-badge{color:#378ADD;font-weight:800;flex-shrink:0}
 
 /* ── P2〜P4 回答画面 ── */
 .q-wrap{max-width:740px;margin:36px auto;padding:0 20px 100px}
@@ -161,7 +158,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:radial-gradient(circle at 
         <span style="color:#1E293B;font-family:'Inter',sans-serif;font-weight:900;"> CHECK </span>
         <span style="color:#0ABFBC;font-family:'Inter',sans-serif;font-weight:900;">FREE</span>
       </div>
-      <p class="start-time">所要時間：約5分　57問の簡易版</p>
 
       <div class="start-badge-row">
         <span class="start-badge badge-free">無料</span>
@@ -179,24 +175,28 @@ body{font-family:'Noto Sans JP',sans-serif;background:radial-gradient(circle at 
         </ul>
       </div>
 
-      <button class="btn-start" id="btnStart">回答をはじめる →</button>
-      <div class="demo-hint">
-        <span class="demo-hint-badge">デモモード</span>
-        <div>
-          <p class="demo-hint-text">左下の ⚡ デモモードで自動入力体験できます</p>
-          <p class="demo-hint-sub">本気の回答はそれからでもOK</p>
-        </div>
+      <div class="option-section">
+        <div class="option-count">57問</div>
+        <div class="option-name">簡易版</div>
+        <p class="option-desc">厚生労働省の標準調査票をもとにした短縮版です。</p>
+        <p class="option-time">所要時間は約5分です。<strong>まずは気軽に、今の状態を確認したい方</strong>におすすめです。</p>
+        <button class="btn-start" id="btnStart">回答をはじめる →</button>
       </div>
 
-      <div class="alt-divider">または</div>
-      <a href="/index141.html" class="alt-box">
-        <span class="alt-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></span>
-        <span class="alt-text">
-          <span class="alt-title">もっと詳しく知りたい方へ</span>
-          <span class="alt-sub">141問・約10分の詳細版で受検する</span>
-        </span>
-        <i class="fa-solid fa-chevron-right alt-arrow"></i>
-      </a>
+      <div class="section-divider"></div>
+
+      <div class="option-section">
+        <div class="option-count teal">141問</div>
+        <div class="option-name">詳細版</div>
+        <p class="option-desc">仕事の負担からやりがいまで、全項目を網羅した最大版です。</p>
+        <p class="option-time">所要時間は約10分です。<strong>弱みだけでなく、強みも含めてじっくり自己分析したい方</strong>に向いています。</p>
+        <a href="/index141.html" class="btn-alt">141問の詳細版で受検する →</a>
+      </div>
+
+      <div class="demo-hint">
+        <span class="demo-hint-badge">⚡ デモモード</span>
+        <span>左下から自動入力体験できます。本気の回答はそれからでもOK</span>
+      </div>
 
       <p class="notice-box-sm">
         本ツールはストレスチェック実施を支援するWebサービスです。質問や採点方法は厚生労働省が発表している調査票・全国平均データセットに基づき、実施規定・実施マニュアルに準拠しています。結果の管理・面接指導の実施は、各事業者の責任において行われます。
