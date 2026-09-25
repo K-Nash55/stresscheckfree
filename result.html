@@ -363,7 +363,13 @@ body {
   left: 50%;
   bottom: 20px;
   z-index: 200;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(120px);
+  transition: transform 0.35s ease;
+  pointer-events: none;
+}
+.corp-float.show {
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
 }
 .corp-float .corp-line { color: #fff; font-size: 14px; font-weight: 800; white-space: nowrap; }
 .corp-float .corp-arrow-wrap {
@@ -391,7 +397,7 @@ body {
   <div class="state-msg">読み込み中...</div>
 </div>
 
-<a href="https://smallchecker.jp/" class="corp-float" target="_blank" rel="noopener">
+<a href="https://smallchecker.jp/" class="corp-float" id="corpFloat" target="_blank" rel="noopener">
   <span class="corp-line">法人向けは「Small Checker」</span>
   <span class="corp-arrow-wrap">→</span>
 </a>
@@ -738,6 +744,16 @@ body {
           }
         });
       });
+    }
+
+    const corpFloat = document.getElementById('corpFloat');
+    if (corpFloat) {
+      const checkNearBottom = () => {
+        const nearBottom = window.scrollY + window.innerHeight > document.body.scrollHeight - 500;
+        corpFloat.classList.toggle('show', nearBottom);
+      };
+      window.addEventListener('scroll', checkNearBottom, { passive: true });
+      checkNearBottom();
     }
 
   } catch (err) {
