@@ -54,6 +54,7 @@ body {
 
 /* ── Judgment Card ── */
 .judgment-card {
+  position: relative;
   border-radius: 14px;
   border: 1px solid;
   padding: 24px 28px;
@@ -291,14 +292,124 @@ body {
   width: 100%;
   border: none;
 }
+
+/* ── ヘッダー ── */
+.hd {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.hd-logo {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+.hd-logo .s { color: #FF6B6B; }
+.hd-logo .c { color: #1E293B; }
+.hd-logo .f { color: #0ABFBC; }
+
+/* ── 判定カード右上ツール ── */
+.card-tools {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 6px;
+}
+.tool-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  border: 1px solid #e0ddd6;
+  background: #FAFAF9;
+  color: #6B6B6B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  transition: background .15s ease;
+}
+.tool-btn:hover { background: #F0EDE4; }
+
+.copy-toast {
+  display: none;
+  text-align: right;
+  font-size: 11px;
+  color: #4AA172;
+  margin-top: -6px;
+  margin-bottom: 10px;
+}
+
+/* ── 法人向けフローティングCTA ── */
+.corp-float {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: fit-content;
+  max-width: calc(100% - 32px);
+  padding: 16px 22px;
+  background: linear-gradient(135deg, #001A6E 0%, #123a9e 100%);
+  border: none;
+  border-radius: 18px;
+  text-decoration: none;
+  box-shadow: 0 12px 32px rgba(0,26,110,0.4), inset 0 1px 0 rgba(255,255,255,.08);
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  z-index: 200;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+.corp-float::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #3EC6E8, transparent);
+}
+.corp-float .corp-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.corp-float .corp-eyebrow { color: #3EC6E8; font-size: 13px; font-weight: 800; letter-spacing: .02em; }
+.corp-float .corp-sub { color: rgba(255,255,255,.6); font-size: 10px; font-weight: 500; line-height: 1.4; }
+.corp-float .corp-title { color: #fff; font-size: 17px; font-weight: 900; letter-spacing: .01em; }
+.corp-float .corp-arrow-wrap {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
 </style>
 </head>
 
 <body>
 
+<div class="hd">
+  <a href="/" class="hd-logo" target="_blank" rel="noopener"><span class="s">STRESS</span> <span class="c">CHECK</span> <span class="f">FREE</span></a>
+</div>
+
 <div id="root">
   <div class="state-msg">読み込み中...</div>
 </div>
+
+<a href="https://smallchecker.jp/" class="corp-float" target="_blank" rel="noopener">
+  <span class="corp-text">
+    <span class="corp-eyebrow">法人向け</span>
+    <span class="corp-sub">セルフサービス型ストレスチェック</span>
+    <span class="corp-title">Small Checker</span>
+  </span>
+  <span class="corp-arrow-wrap">→</span>
+</a>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase-client.js"></script>
@@ -515,6 +626,10 @@ body {
     /* 第1層：判定カード */
     html += `
       <div class="judgment-card" style="background:#fff;border-color:${jBorder}">
+        <div class="card-tools">
+          <button class="tool-btn" id="btnPdf" title="PDF保存">📄</button>
+          <button class="tool-btn" id="btnCopy" title="URLをコピー">🔗</button>
+        </div>
         <div class="judgment-badge" style="background:${jBadgeBg}">${jBadge}</div>
         <div class="judgment-label">${esc(jLabel)}</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0">
@@ -612,6 +727,20 @@ body {
 
     html += `</div>`;
     root.innerHTML = html;
+
+    const btnPdf = document.getElementById('btnPdf');
+    if (btnPdf) {
+      btnPdf.addEventListener('click', function () { window.print(); });
+    }
+    const btnCopy = document.getElementById('btnCopy');
+    if (btnCopy) {
+      btnCopy.addEventListener('click', function () {
+        navigator.clipboard.writeText(window.location.href).then(function () {
+          btnCopy.textContent = '✅';
+          setTimeout(function () { btnCopy.textContent = '🔗'; }, 1500);
+        });
+      });
+    }
 
   } catch (err) {
     console.error(err);
