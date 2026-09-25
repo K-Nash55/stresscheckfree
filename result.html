@@ -353,23 +353,16 @@ body {
   gap: 10px;
   width: fit-content;
   max-width: calc(100% - 32px);
-  padding: 13px 20px;
+  padding: 12px 18px;
   background: linear-gradient(135deg, #001A6E 0%, #123a9e 100%);
   border: none;
   border-radius: 999px;
   text-decoration: none;
   box-shadow: 0 10px 28px rgba(0,26,110,0.4);
   position: fixed;
-  left: 50%;
-  bottom: 20px;
+  right: 16px;
+  bottom: 16px;
   z-index: 200;
-  transform: translateX(-50%) translateY(120px);
-  transition: transform 0.35s ease;
-  pointer-events: none;
-}
-.corp-float.show {
-  transform: translateX(-50%) translateY(0);
-  pointer-events: auto;
 }
 .corp-float .corp-line { color: #fff; font-size: 14px; font-weight: 800; white-space: nowrap; }
 .corp-float .corp-arrow-wrap {
@@ -744,16 +737,6 @@ body {
           }
         });
       });
-    }
-
-    const corpFloat = document.getElementById('corpFloat');
-    if (corpFloat) {
-      const checkNearBottom = () => {
-        const nearBottom = window.scrollY + window.innerHeight > document.body.scrollHeight - 500;
-        corpFloat.classList.toggle('show', nearBottom);
-      };
-      window.addEventListener('scroll', checkNearBottom, { passive: true });
-      checkNearBottom();
     }
 
   } catch (err) {
