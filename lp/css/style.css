@@ -1232,8 +1232,6 @@ em  { font-style: normal; }
   .benefit-card--wide { grid-column: auto; }
   .floating-cta { display: block !important; }
   .site-footer { padding-bottom: 110px; } 
-  .corp-features { grid-template-columns: 1fr; }
-  .corp-cta { padding: 80px 0; }
 }
 @media (min-width: 769px) { .floating-cta { display: none !important; } }
 @media (max-width: 480px) {
@@ -1343,4 +1341,9 @@ em  { font-style: normal; }
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
+}
+
+@media (max-width: 768px) {
+  .corp-features { grid-template-columns: 1fr; }
+  .corp-cta { padding: 80px 0; }
 }
