@@ -384,13 +384,13 @@ body {
 
     if (sessionParam) {
       /* ── トークンURL方式 ── */
-      const dbRes = await supabase
-        .from('survey_responses')
-        .select('*')
-        .eq('session_id', sessionParam)
-        .limit(1);
+      const fnRes = await fetch(
+        SUPABASE_URL + '/functions/v1/get-result?session_id=' + encodeURIComponent(sessionParam),
+        { headers: { 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'apikey': SUPABASE_ANON_KEY } }
+      );
+      const fnJson = await fnRes.json();
 
-      if (!dbRes.data || dbRes.data.length === 0) {
+      if (!fnRes.ok || !fnJson.data) {
         root.innerHTML = `
           <div class="state-msg">
             結果が見つかりません。URLを確認してください。<br>
@@ -399,7 +399,7 @@ body {
         return;
       }
 
-      const row = dbRes.data[0];
+      const row = fnJson.data;
       const answers = row.answers || {};
 
       /* scoring.jsで採点 */
