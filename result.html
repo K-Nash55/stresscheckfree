@@ -33,7 +33,7 @@ body {
 .wrap {
   max-width: 800px;
   margin: 0 auto;
-  padding: 24px 16px 60px;
+  padding: 24px 16px 90px;
 }
 
 /* ── Loading / Error ── */
@@ -297,14 +297,14 @@ body {
 .hd {
   display: flex;
   align-items: center;
-  padding: 14px 16px;
+  padding: 16px 16px 8px;
   max-width: 800px;
   margin: 0 auto;
 }
 .hd-logo {
   font-family: 'Inter', sans-serif;
   font-weight: 900;
-  font-size: 1rem;
+  font-size: 1.35rem;
   letter-spacing: -0.01em;
   text-decoration: none;
 }
@@ -312,82 +312,71 @@ body {
 .hd-logo .c { color: #1E293B; }
 .hd-logo .f { color: #0ABFBC; }
 
-/* ── 判定カード右上ツール ── */
-.card-tools {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+/* ── ページ全体に対する操作ツール（カード外） ── */
+.page-tools {
   display: flex;
-  gap: 6px;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 .tool-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  border: 1px solid #e0ddd6;
-  background: #FAFAF9;
-  color: #6B6B6B;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1.5px solid #d6d0c4;
+  background: #fff;
+  color: #1a1a2e;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
   font-family: inherit;
-  font-size: 14px;
-  transition: background .15s ease;
+  box-shadow: 0 2px 8px rgba(26,26,46,.06);
+  transition: background .15s ease, border-color .15s ease, transform .15s ease;
 }
-.tool-btn:hover { background: #F0EDE4; }
+.tool-btn:hover { background: #F0EDE4; border-color: #b8b0a0; transform: translateY(-1px); }
 
 .copy-toast {
   display: none;
   text-align: right;
   font-size: 11px;
   color: #4AA172;
-  margin-top: -6px;
-  margin-bottom: 10px;
+  margin-top: -8px;
+  margin-bottom: 14px;
 }
 
 /* ── 法人向けフローティングCTA ── */
 .corp-float {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
   width: fit-content;
   max-width: calc(100% - 32px);
-  padding: 16px 22px;
+  padding: 13px 20px;
   background: linear-gradient(135deg, #001A6E 0%, #123a9e 100%);
   border: none;
-  border-radius: 18px;
+  border-radius: 999px;
   text-decoration: none;
-  box-shadow: 0 12px 32px rgba(0,26,110,0.4), inset 0 1px 0 rgba(255,255,255,.08);
+  box-shadow: 0 10px 28px rgba(0,26,110,0.4);
   position: fixed;
   left: 50%;
   bottom: 20px;
   z-index: 200;
   transform: translateX(-50%);
-  overflow: hidden;
 }
-.corp-float::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #3EC6E8, transparent);
-}
-.corp-float .corp-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.corp-float .corp-eyebrow { color: #3EC6E8; font-size: 13px; font-weight: 800; letter-spacing: .02em; }
-.corp-float .corp-sub { color: rgba(255,255,255,.6); font-size: 10px; font-weight: 500; line-height: 1.4; }
-.corp-float .corp-title { color: #fff; font-size: 17px; font-weight: 900; letter-spacing: .01em; }
+.corp-float .corp-line { color: #fff; font-size: 14px; font-weight: 800; white-space: nowrap; }
 .corp-float .corp-arrow-wrap {
   flex-shrink: 0;
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background: rgba(255,255,255,.12);
+  background: rgba(255,255,255,.15);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 12px;
 }
 </style>
 </head>
@@ -403,11 +392,7 @@ body {
 </div>
 
 <a href="https://smallchecker.jp/" class="corp-float" target="_blank" rel="noopener">
-  <span class="corp-text">
-    <span class="corp-eyebrow">法人向け</span>
-    <span class="corp-sub">セルフサービス型ストレスチェック</span>
-    <span class="corp-title">Small Checker</span>
-  </span>
+  <span class="corp-line">法人向けは「Small Checker」</span>
   <span class="corp-arrow-wrap">→</span>
 </a>
 
@@ -623,13 +608,23 @@ body {
 
     let html = `<div class="wrap">`;
 
+    /* ページ全体に対する操作ツール（カード外） */
+    html += `
+      <div class="page-tools">
+        <button class="tool-btn" id="btnPdf">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          PDF
+        </button>
+        <button class="tool-btn" id="btnCopy">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          URL
+        </button>
+      </div>
+      <div class="copy-toast" id="copyToast">✓ コピーしました</div>`;
+
     /* 第1層：判定カード */
     html += `
       <div class="judgment-card" style="background:#fff;border-color:${jBorder}">
-        <div class="card-tools">
-          <button class="tool-btn" id="btnPdf" title="PDF保存">📄</button>
-          <button class="tool-btn" id="btnCopy" title="URLをコピー">🔗</button>
-        </div>
         <div class="judgment-badge" style="background:${jBadgeBg}">${jBadge}</div>
         <div class="judgment-label">${esc(jLabel)}</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0">
@@ -733,11 +728,14 @@ body {
       btnPdf.addEventListener('click', function () { window.print(); });
     }
     const btnCopy = document.getElementById('btnCopy');
+    const copyToast = document.getElementById('copyToast');
     if (btnCopy) {
       btnCopy.addEventListener('click', function () {
         navigator.clipboard.writeText(window.location.href).then(function () {
-          btnCopy.textContent = '✅';
-          setTimeout(function () { btnCopy.textContent = '🔗'; }, 1500);
+          if (copyToast) {
+            copyToast.style.display = 'block';
+            setTimeout(function () { copyToast.style.display = 'none'; }, 2000);
+          }
         });
       });
     }
