@@ -79,6 +79,8 @@ tr:hover td { background: #f8f9fa; }
     <label>会社名:
       <select id="filterCompany">
         <option value="">すべて</option>
+        <option value="__individual__">個人受検</option>
+        <option value="__company__">法人受検</option>
       </select>
     </label>
     <label>受検日:
@@ -114,6 +116,16 @@ tr:hover td { background: #f8f9fa; }
 </div>
 
 <script>
+// ─── list-result Edge Function 経由で全件取得 ──
+// RLS対応：直接テーブルは読めないため、service role権限のEdge Function経由で取得する
+async function fetchFromListResults() {
+  var res = await fetch(SUPABASE_URL + '/functions/v1/list-results', {
+    headers: { 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'apikey': SUPABASE_ANON_KEY }
+  });
+  var json = await res.json();
+  return (res.ok && json.data) ? json.data : [];
+}
+
 // ─── 日時フォーマット ────────────────────────
 function formatDate(dateStr) {
   var d = new Date(dateStr);
@@ -129,44 +141,27 @@ function formatDate(dateStr) {
 // ─── 状態 ───────────────────────────────────
 var allData = [];
 var filteredData = [];
-var companies = [];
 var currentPage = 1;
 var PAGE_SIZE = 50;
 var master = null;
 
-// ─── 会社名解決 ──────────────────────────────
-function getCompanyName(company_id) {
-  if (!company_id) return '個人受検';
-  var c = companies.find(function(c) { return c.id === company_id; });
-  return c ? c.name : '不明';
-}
-
-// ─── 会社名プルダウン生成 ─────────────────────
-function buildCompanyFilter() {
-  var sel = document.getElementById('filterCompany');
-  var indOpt = document.createElement('option');
-  indOpt.value = '__individual__';
-  indOpt.textContent = '個人受検';
-  sel.appendChild(indOpt);
-  companies.forEach(function(c) {
-    var opt = document.createElement('option');
-    opt.value = c.id;
-    opt.textContent = c.name;
-    sel.appendChild(opt);
-  });
+// ─── 会社名表示（簡略版：カンパニー機能廃止のため実名は取得しない） ──
+function getCompanyLabel(row) {
+  if (row.is_demo) return 'デモ受験';
+  return row.company_id ? '法人受検' : '個人受検';
 }
 
 // ─── フィルタ処理 ────────────────────────────
 function applyFilter() {
-  var companyId = document.getElementById('filterCompany').value;
+  var companyFilter = document.getElementById('filterCompany').value;
   var dateFrom = document.getElementById('filterDateFrom').value;
   var dateTo = document.getElementById('filterDateTo').value;
 
   filteredData = allData.filter(function(row) {
-    if (companyId === '__individual__') {
+    if (companyFilter === '__individual__') {
       if (row.company_id !== null) return false;
-    } else if (companyId) {
-      if (row.company_id !== companyId) return false;
+    } else if (companyFilter === '__company__') {
+      if (!row.company_id) return false;
     }
     if (dateFrom) {
       var fromUTC = new Date(dateFrom + 'T00:00:00+09:00').toISOString();
@@ -210,7 +205,7 @@ function renderTable() {
     pageData.forEach(function(row) {
       var dt = formatDate(row.created_at);
       var sid = row.session_id ? row.session_id.slice(0, 8) : '-';
-      var company = row.is_demo ? 'デモ受験' : getCompanyName(row.company_id);
+      var company = getCompanyLabel(row);
       var versionLabel = row.version === '57' ? '57問版' : row.version === '141' ? '141問版' : '-';
       var level = row.stress_level || '-';
       var levelClass = level === 'high' ? 'level-high' : level === 'mid' ? 'level-mid' : 'level-low';
@@ -261,18 +256,11 @@ function renderTable() {
 }
 
 // ─── 詳細ボタン ──────────────────────────────
-async function openDetail(sessionId) {
-  var result = await supabase
-    .from('survey_responses')
-    .select('*')
-    .eq('session_id', sessionId)
-    .limit(1);
-
-  if (result.data && result.data.length > 0) {
-    sessionStorage.setItem('superadmin_session_id', sessionId);
-    sessionStorage.removeItem('stressResult');
-    window.location.href = 'superadmin.html';
-  }
+function openDetail(sessionId) {
+  if (!sessionId) return;
+  sessionStorage.setItem('superadmin_session_id', sessionId);
+  sessionStorage.removeItem('stressResult');
+  window.location.href = 'superadmin.html';
 }
 
 // ─── ページネーション ────────────────────────
@@ -306,7 +294,7 @@ function downloadCSV() {
     return [
       formatDate(row.created_at),
       row.session_id || '',
-      row.is_demo ? 'デモ受験' : getCompanyName(row.company_id),
+      getCompanyLabel(row),
       row.version === '57' ? '57問版' : row.version === '141' ? '141問版' : '',
       row.stress_level || '',
       domainA, domainB, domainC, domainAC, typeCode, typeLabel
@@ -316,7 +304,7 @@ function downloadCSV() {
   var csvLines = [headers].concat(rows).map(function(r) {
     return r.map(function(v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(',');
   });
-  var csv = '﻿' + csvLines.join('\r\n');
+  var csv = '\ufeff' + csvLines.join('\r\n');
 
   var startLabel = dateFrom || 'all';
   var endLabel = dateTo || 'all';
@@ -335,15 +323,7 @@ function downloadCSV() {
 async function init() {
   master = await loadMaster();
 
-  var cr = await supabase.from('companies').select('id, name').order('name');
-  companies = cr.data || [];
-  buildCompanyFilter();
-
-  var sr = await supabase
-    .from('survey_responses')
-    .select('id, session_id, company_id, stress_level, created_at, is_demo, version, answers')
-    .order('created_at', { ascending: false });
-  allData = sr.data || [];
+  allData = await fetchFromListResults();
   filteredData = allData;
 
   renderTable();
