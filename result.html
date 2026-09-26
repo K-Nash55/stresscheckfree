@@ -212,56 +212,10 @@ body {
 .alert-warning .alert-title { color: #7A5900; }
 .alert-warning .alert-body  { color: #5C4200; }
 
-/* ── Print ── */
-@media print {
-  body { background: #fff; }
-  .judgment-card { break-inside: avoid; }
-  .alert-card { break-inside: avoid; }
-  .scale-row { break-inside: avoid; }
-  @page { margin: 14mm; }
-
-  /* 印刷時は不要な要素を非表示 */
-  .result-save-note,
-  .page-tools,
-  .survey-embed {
-    display: none !important;
-  }
-
-  /* 法人向けフローティングは、固定表示をやめてロゴ横にそのまま表示 */
-  .corp-float {
-    position: static;
-    display: inline-flex;
-    transform: none;
-    margin-left: 14px;
-    box-shadow: none;
-  }
-  .corp-float .corp-arrow-wrap {
-    display: none;
-  }
-
-  /* バーの背景・塗りを印刷時も表示 */
-  .bar-track,
-  .bar-fill {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  /* 全ての背景色・ボーダーカラーを印刷時も表示 */
-  * {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-}
-
 /* ── Mobile ── */
 @media (max-width: 500px) {
   .scale-row { flex-direction: column; gap: 6px; }
   .scale-left { flex: unset; width: 100%; padding-right: 0; }
-}
-.result-save-note {
-  font-size: 0.82rem;
-  color: #888;
-  margin-top: 8px;
 }
 .footer-save-hint {
   display: flex;
@@ -397,6 +351,46 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 12px;
+}
+
+/* ── Print（必ず最後に書く：ここより前にある同名クラスをすべて上書きするため） ── */
+@media print {
+  body { background: #fff; }
+  .judgment-card { break-inside: avoid; }
+  .alert-card { break-inside: avoid; }
+  .scale-row { break-inside: avoid; }
+  @page { margin: 14mm; }
+
+  /* 印刷時は不要な要素を非表示 */
+  .page-tools,
+  .survey-embed {
+    display: none !important;
+  }
+
+  /* 法人向けフローティングは、固定表示をやめてロゴ横にそのまま表示 */
+  .corp-float {
+    position: static;
+    display: inline-flex;
+    transform: none;
+    margin-left: 14px;
+    box-shadow: none;
+  }
+  .corp-float .corp-arrow-wrap {
+    display: none;
+  }
+
+  /* バーの背景・塗りを印刷時も表示 */
+  .bar-track,
+  .bar-fill {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* 全ての背景色・ボーダーカラーを印刷時も表示 */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }
 </style>
 </head>
@@ -661,7 +655,6 @@ body {
           <span style="font-size:0.9rem;font-weight:700;color:${jTextCol}">${isHigh ? '高ストレス' : '適応状態'}</span>
         </div>
         ${jAdvice ? `<div class="judgment-advice">${esc(jAdvice)}</div>` : ''}
-        <p class="result-save-note">📎 このページのURLをメールやLINEで自分に送っておくと、いつでも結果を見返すことができます。</p>
       </div>`;
 
     /* 第2層：ストレス反応 */
