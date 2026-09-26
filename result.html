@@ -212,8 +212,6 @@ body {
 .alert-warning .alert-title { color: #7A5900; }
 .alert-warning .alert-body  { color: #5C4200; }
 
-.print-corp-note { display: none; }
-
 /* ── Print ── */
 @media print {
   body { background: #fff; }
@@ -222,19 +220,23 @@ body {
   .scale-row { break-inside: avoid; }
   @page { margin: 14mm; }
 
-  /* 印刷時は不要な要素を非表示、法人向け案内はロゴ横にテキストで表示 */
+  /* 印刷時は不要な要素を非表示 */
   .result-save-note,
   .page-tools,
-  .corp-float,
   .survey-embed {
     display: none !important;
   }
-  .print-corp-note {
-    display: inline;
-    font-size: 13px;
-    font-weight: 800;
-    color: #001A6E;
-    margin-left: 12px;
+
+  /* 法人向けフローティングは、固定表示をやめてロゴ横にそのまま表示 */
+  .corp-float {
+    position: static;
+    display: inline-flex;
+    transform: none;
+    margin-left: 14px;
+    box-shadow: none;
+  }
+  .corp-float .corp-arrow-wrap {
+    display: none;
   }
 
   /* バーの背景・塗りを印刷時も表示 */
@@ -314,6 +316,7 @@ body {
 .hd {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 16px 16px 8px;
   max-width: 800px;
   margin: 0 auto;
@@ -402,17 +405,15 @@ body {
 
 <div class="hd">
   <a href="/" class="hd-logo" target="_blank" rel="noopener"><span class="s">STRESS</span> <span class="c">CHECK</span> <span class="f">FREE</span></a>
-  <span class="print-corp-note">法人向けは「Small Checker」（smallchecker.jp）</span>
+  <a href="https://smallchecker.jp/" class="corp-float" id="corpFloat" target="_blank" rel="noopener">
+    <span class="corp-line">法人向けは「Small Checker」</span>
+    <span class="corp-arrow-wrap">→</span>
+  </a>
 </div>
 
 <div id="root">
   <div class="state-msg">読み込み中...</div>
 </div>
-
-<a href="https://smallchecker.jp/" class="corp-float" id="corpFloat" target="_blank" rel="noopener">
-  <span class="corp-line">法人向けは「Small Checker」</span>
-  <span class="corp-arrow-wrap">→</span>
-</a>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase-client.js"></script>
